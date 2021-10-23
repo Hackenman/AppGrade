@@ -81,7 +81,10 @@ public class MainActivity extends AppCompatActivity {
         Adapter.setOnItemClickListener(new ExampleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                changeItem(position, "Clicked");
+                Intent intent = new Intent(MainActivity.this, Class_Selected.class);
+                intent.putExtra("Example Item", exampleList.get(position));
+
+                startActivity(intent);
             }
         });
 

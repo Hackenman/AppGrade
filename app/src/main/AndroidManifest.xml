@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppGrade">
         <activity android:name=".Student_Selected"></activity>
-        <activity android:name=".Class_Selected" />
+        <activity android:name=".Class_Selected" android:parentActivityName=".MainActivity" />
         <activity android:name=".Create_Class" android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

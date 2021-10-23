@@ -7,14 +7,27 @@
     tools:context=".Class_Selected">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/namedclass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Class1"
-        android:textSize="30dp"
+        android:hint="class"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHorizontal_bias="0.083"
+        app:layout_constraintStart_toEndOf="@+id/level"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
+
+    <TextView
+        android:id="@+id/level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="level"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
@@ -23,7 +36,7 @@
         android:id="@+id/selstudent"
         android:layout_width="292dp"
         android:layout_height="50dp"
-        android:text="Student1"
+        android:text="Add Student"
         app:backgroundTint="#4CAF50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
