@@ -14,7 +14,7 @@ public class Class_Selected extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class__selected);
 
-        Button selectedStudent = findViewById(R.id.button3);
+        Button selectedStudent = findViewById(R.id.selstudent);
 
         selectedStudent.setOnClickListener(new View.OnClickListener() {
             @Override
