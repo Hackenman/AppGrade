@@ -9,6 +9,10 @@ public class ExampleItem {
         gradeLvl = gradelvl;
     }
 
+    public void changeText1(String text) {
+        className = text;
+    }
+
     public String getClassName() {
         return className;
     }

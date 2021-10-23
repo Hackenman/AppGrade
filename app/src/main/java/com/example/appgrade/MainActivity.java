@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<ExampleItem> exampleList;
 
     private androidx.recyclerview.widget.RecyclerView RecyclerView;
-    private RecyclerView.Adapter Adapter;
+    private ExampleAdapter Adapter;
     private RecyclerView.LayoutManager LayoutManager;
 
     @Override
@@ -58,6 +58,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }*/
 
+    public void changeItem(int position, String text){
+        exampleList.get(position).changeText1(text);
+        Adapter.notifyItemChanged(position);
+    }
+
     public void createExampleList(){
         exampleList = new ArrayList<>();
         exampleList.add(new ExampleItem("Maths", "Grade 5"));
@@ -72,6 +77,13 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView.setLayoutManager(LayoutManager);
         RecyclerView.setAdapter(Adapter);
+
+        Adapter.setOnItemClickListener(new ExampleAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                changeItem(position, "Clicked");
+            }
+        });
 
     }
 }
