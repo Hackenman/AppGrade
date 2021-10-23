@@ -72,5 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView.setLayoutManager(LayoutManager);
         RecyclerView.setAdapter(Adapter);
+
     }
 }

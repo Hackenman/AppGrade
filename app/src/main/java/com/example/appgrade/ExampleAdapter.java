@@ -14,6 +14,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
 
     private ArrayList<ExampleItem> ExampleList;
 
+
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public TextView ClassName;
         public TextView GradeLevel;
