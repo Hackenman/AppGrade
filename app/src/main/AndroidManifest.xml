@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppGrade">
-        <activity android:name=".Student_Selected" android:parentActivityName=".Class_Selected"></activity>
-        <activity android:name=".Class_Selected" android:parentActivityName=".MainActivity" />
-        <activity android:name=".Create_Class" android:parentActivityName=".MainActivity" />
+        <activity android:name=".Student_Selected"></activity>
+        <activity android:name=".Class_Selected"/>
+        <activity android:name=".Create_Class"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

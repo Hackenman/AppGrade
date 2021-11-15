@@ -48,16 +48,15 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         ExampleList = exampleList;
     }
 
-    @NonNull
     @Override
-    public ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ExampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
         ExampleViewHolder evh = new ExampleViewHolder(v, Listener);
         return evh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
+    public void onBindViewHolder( ExampleViewHolder holder, int position) {
         ExampleItem currentItem = ExampleList.get(position);
 
         holder.ClassName.setText(currentItem.getClassName());

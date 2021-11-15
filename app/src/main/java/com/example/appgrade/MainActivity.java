@@ -17,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
     private androidx.recyclerview.widget.RecyclerView RecyclerView;
     private ExampleAdapter Adapter;
     private RecyclerView.LayoutManager LayoutManager;
+    private String nClass;
+    private String gLevel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button createClass = findViewById(R.id.add);
-        /*Button selectClass = findViewById(R.id.selclass);*/
 
 //        Button to Add classes
         createClass.setOnClickListener(new View.OnClickListener() {
@@ -34,17 +36,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*selectClass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SelectedClass();
-            }
-        });*/
-
 //        Array for the data
-        createExampleList();
+        exampleList = new ArrayList<>();
 //        build the Recycler view
         buildRecycleView();
+
+
+        Intent intent = getIntent();
+        nClass = intent.getStringExtra(Create_Class.CLASSNAME);
+        gLevel = intent.getStringExtra(Create_Class.GRADELEVEL);
+        createExampleList();
 
     }
 
@@ -53,28 +54,20 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /*private void SelectedClass(){
-        Intent intent = new Intent(this, Class_Selected.class);
-        startActivity(intent);
-    }*/
-
     public void changeItem(int position, String text){
         exampleList.get(position).changeText1(text);
         Adapter.notifyItemChanged(position);
     }
 
     public void createExampleList(){
-        exampleList = new ArrayList<>();
-        exampleList.add(new ExampleItem("Maths", "Grade 5"));
-        exampleList.add(new ExampleItem("English", "Grade 11"));
-        exampleList.add(new ExampleItem("Computer", "Grade 12"));
+        exampleList.add( new ExampleItem(nClass, gLevel));
+
     }
     public void buildRecycleView(){
         RecyclerView = findViewById(R.id.recyclerView);
-        RecyclerView.setHasFixedSize(true);
+
         LayoutManager = new LinearLayoutManager(this);
         Adapter = new ExampleAdapter(exampleList);
-
         RecyclerView.setLayoutManager(LayoutManager);
         RecyclerView.setAdapter(Adapter);
 
@@ -83,10 +76,10 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(int position) {
                 Intent intent = new Intent(MainActivity.this, Class_Selected.class);
                 intent.putExtra("Example Item", exampleList.get(position));
-
                 startActivity(intent);
             }
         });
 
     }
+
 }
