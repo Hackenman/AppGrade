@@ -14,6 +14,7 @@ import android.widget.Spinner;
 public class Create_Class extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     public static final String CLASSNAME = "com.example.appgrade.CLASSNAME";
     public static final String GRADELEVEL = "com.example.appgrade.GRADELEVEL";
+    public static final String NUMBEROFSTUDENTS = "com.example.appgrade.NUMBEROFSTUDENTS";
     private Button buttonCreate;
     private EditText Nameclass;
     private EditText numStudent;
@@ -56,12 +57,13 @@ public class Create_Class extends AppCompatActivity implements AdapterView.OnIte
         Nameclass = findViewById(R.id.namingClass);
         String nameclass = Nameclass.getText().toString();
         numStudent = findViewById(R.id.numberOfStudents);
-        int numberofS = Integer.parseInt(numStudent.getText().toString());
+        String numberofS = numStudent.getText().toString();
         String level = gradelvl;
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(CLASSNAME, nameclass);
         intent.putExtra(GRADELEVEL, level);
+        intent.putExtra(NUMBEROFSTUDENTS, numberofS);
         startActivity(intent);
 
     }

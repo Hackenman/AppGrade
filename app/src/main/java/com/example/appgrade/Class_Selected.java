@@ -14,17 +14,8 @@ public class Class_Selected extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class__selected);
-
-        Intent intent = getIntent();
-        ExampleItem exampleItem = intent.getParcelableExtra("Example Item");
-
-        String namedClass = exampleItem.getClassName();
-        String Level = exampleItem.getGradeLvl();
-
-        TextView classnamed = findViewById(R.id.namedclass);
-        classnamed.setText(namedClass);
-        TextView LevelG = findViewById(R.id.level);
-        LevelG.setText(Level);
+//          Get Data
+        loadData();
 
         Button selectedStudent = findViewById(R.id.selstudent);
 
@@ -40,4 +31,23 @@ public class Class_Selected extends AppCompatActivity {
         Intent intent = new Intent(this, Student_Selected.class);
         startActivity(intent);
     }
+
+    private void loadData(){
+        Intent intent = getIntent();
+        ExampleItem exampleItem = intent.getParcelableExtra("Example Item");
+        String namedClass = exampleItem.getClassName();
+        String Level = exampleItem.getGradeLvl();
+        String Students = exampleItem.getNstudents();
+
+        TextView classnamed = findViewById(R.id.namedclass);
+        classnamed.setText(namedClass);
+
+        TextView LevelG = findViewById(R.id.level);
+        LevelG.setText(Level);
+
+        TextView numStudents = findViewById(R.id.numStudent);
+        numStudents.setText(Students);
+    }
+
+
 }
