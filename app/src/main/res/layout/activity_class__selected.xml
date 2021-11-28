@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".Class_Selected">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/studentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="75dp"
+        android:padding="4dp"
+        android:scrollbars="vertical" />
+
+
     <TextView
         android:id="@+id/namedclass"
         android:layout_width="wrap_content"
