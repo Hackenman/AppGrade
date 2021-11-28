@@ -75,13 +75,11 @@ public class Class_Selected extends AppCompatActivity {
         TextView LevelG = findViewById(R.id.level);
         LevelG.setText(gradeLevel);
 
-        TextView numStudents = findViewById(R.id.numStudent);
-        numStudents.setText(nOfStudents);
     }
 
     private void buildRecycleView(){
         studentItems = new ArrayList<>();
-        studentItems.add(new StudentItem("name","sex"));
+        studentItems.add(new StudentItem("Eunice Silot","Female"));
 
         sRecyclerView = findViewById(R.id.studentView);
         sLayoutManger = new LinearLayoutManager(this);
@@ -100,7 +98,6 @@ public class Class_Selected extends AppCompatActivity {
 
             @Override
             public void onDeleteClick(int position) {
-
             }
         });
     }

@@ -43,19 +43,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void CreateClass(){
-        Intent intent = new Intent(this, Create_Class.class);
-        startActivity(intent);
-
-    }
-
-    private void saveClasses(){
-        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(exampleList);
-        editor.putString("class list", json);
-        editor.apply();
+    public void setButtons(){
+        Button createClass = findViewById(R.id.add);
+        createClass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateClass();
+            }
+        });
     }
 
     private void loadClasses(){
@@ -70,22 +65,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    public void classSelect(int position){
-        Intent intent = new Intent(MainActivity.this, Class_Selected.class);
-        intent.putExtra("Example Item", exampleList.get(position));
-        startActivity(intent);
-    }
-
-    public void removeClass(int position){
-        exampleList.remove(position);
-        Adapter.notifyItemRemoved(position);
-    }
-
-    public void createExampleList(){
-        exampleList.add( new ExampleItem(nClass, gLevel, numStudents));
-
-    }
     public void buildRecycleView(){
         RecyclerView = findViewById(R.id.recyclerView);
 
@@ -105,32 +84,50 @@ public class MainActivity extends AppCompatActivity {
                 removeClass(position);
             }
         });
-
-    }
-
-    public void setButtons(){
-        Button createClass = findViewById(R.id.add);
-        Button saveClass = findViewById(R.id.save);
-        createClass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CreateClass();
-            }
-        });
-        saveClass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveClasses();
-            }
-        });
     }
 
     public void addClassData(){
         Intent intent = getIntent();
         nClass = intent.getStringExtra(Create_Class.CLASSNAME);
         gLevel = intent.getStringExtra(Create_Class.GRADELEVEL);
-        numStudents = intent.getStringExtra(Create_Class.NUMBEROFSTUDENTS);
         createExampleList();
+
     }
+
+    public void createExampleList(){
+        exampleList.add( new ExampleItem(nClass, gLevel, numStudents));
+        saveClasses();
+    }
+
+    private void saveClasses(){
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(exampleList);
+        editor.putString("class list", json);
+        editor.apply();
+    }
+
+    private void CreateClass(){
+        Intent intent = new Intent(this, Create_Class.class);
+        startActivity(intent);
+
+    }
+
+
+
+    public void classSelect(int position){
+        Intent intent = new Intent(MainActivity.this, Class_Selected.class);
+        intent.putExtra("Example Item", exampleList.get(position));
+        startActivity(intent);
+    }
+
+    public void removeClass(int position){
+        exampleList.remove(position);
+        Adapter.notifyItemRemoved(position);
+        saveClasses();
+    }
+
+
 
 }
