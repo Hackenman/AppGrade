@@ -10,12 +10,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.security.PrivateKey;
 import java.util.ArrayList;
+import java.util.PrimitiveIterator;
 
 public class Class_Selected extends AppCompatActivity {
+    private ArrayList<StudentItem> studentItems;
+    private String sName;
+    private String sSex;
+    private String className;
+    private String gradeLevel;
+    private String nOfStudents;
 
     private RecyclerView sRecyclerView;
-    private RecyclerView.Adapter sAdapter;
+    private StudentAdapter sAdapter;
     private RecyclerView.LayoutManager sLayoutManger;
 
     @Override
@@ -30,11 +38,16 @@ public class Class_Selected extends AppCompatActivity {
 
         loadButtons();
 
+        addStudentData();
+
     }
 
-    private void SelectedStudent(){
-        Intent intent = new Intent(this, Student_Selected.class);
+    private void CreateStudent(){
+        Intent intent = new Intent(this, Create_Student.class);
         startActivity(intent);
+    }
+    private void studentSelected(){
+
     }
 
     private void loadButtons(){
@@ -43,30 +56,31 @@ public class Class_Selected extends AppCompatActivity {
         selectedStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelectedStudent();
+                CreateStudent();
             }
         });
     }
 
     private void loadData(){
-        Intent intent = getIntent();
-        ExampleItem exampleItem = intent.getParcelableExtra("Example Item");
-        String namedClass = exampleItem.getClassName();
-        String Level = exampleItem.getGradeLvl();
-        String Students = exampleItem.getNstudents();
-
+        if (className == null) {
+            Intent intent = getIntent();
+            ExampleItem exampleItem = intent.getParcelableExtra("Example Item");
+            className = exampleItem.getClassName();
+            gradeLevel = exampleItem.getGradeLvl();
+            nOfStudents = exampleItem.getNstudents();
+        }
         TextView classnamed = findViewById(R.id.namedclass);
-        classnamed.setText(namedClass);
+        classnamed.setText(className);
 
         TextView LevelG = findViewById(R.id.level);
-        LevelG.setText(Level);
+        LevelG.setText(gradeLevel);
 
         TextView numStudents = findViewById(R.id.numStudent);
-        numStudents.setText(Students);
+        numStudents.setText(nOfStudents);
     }
 
     private void buildRecycleView(){
-        ArrayList<StudentItem> studentItems = new ArrayList<>();
+        studentItems = new ArrayList<>();
         studentItems.add(new StudentItem("name","sex"));
 
         sRecyclerView = findViewById(R.id.studentView);
@@ -75,7 +89,26 @@ public class Class_Selected extends AppCompatActivity {
 
         sRecyclerView.setLayoutManager(sLayoutManger);
         sRecyclerView.setAdapter(sAdapter);
+
+        sAdapter.setOnItemClick(new StudentAdapter.OnItemClick() {
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(Class_Selected.this, Student_Selected.class);
+                intent.putExtra("Student Item", studentItems.get(position));
+                startActivity(intent);
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+
+            }
+        });
     }
 
+    private void addStudentData(){
+        Intent intent = getIntent();
+        sName = intent.getStringExtra(Create_Student.STUDENTNAME);
+        sSex = intent.getStringExtra(Create_Student.SEX);
+    }
 
 }

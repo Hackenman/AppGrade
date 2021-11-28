@@ -16,5 +16,10 @@
         <item>Grade 12</item>
     </string-array>
 
-    
+    <string-array name="Sex">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+
 </resources>
