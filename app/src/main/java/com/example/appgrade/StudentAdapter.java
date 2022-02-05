@@ -53,7 +53,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
                     if (listener != null){
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION){
-                            listener.onClick(position);
+                            listener.onDeleteClick(position);
                         }
                     }
                 }

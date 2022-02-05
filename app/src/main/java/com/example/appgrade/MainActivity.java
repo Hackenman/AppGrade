@@ -17,6 +17,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String CLASS_NAME = "com.example.appgrade.CLASS_NAME";
+    public static final String GRADE_LEVEL = "com.example.appgrade.GRADE_LEVEL";
+
     private ArrayList<ExampleItem> exampleList;
 
     private androidx.recyclerview.widget.RecyclerView RecyclerView;
@@ -24,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager LayoutManager;
     private String nClass;
     private String gLevel;
-    private String numStudents;
+
 
 
     @Override
@@ -90,12 +93,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         nClass = intent.getStringExtra(Create_Class.CLASSNAME);
         gLevel = intent.getStringExtra(Create_Class.GRADELEVEL);
-        createExampleList();
+        if (gLevel != null){
+        createExampleList();}
 
     }
 
     public void createExampleList(){
-        exampleList.add( new ExampleItem(nClass, gLevel, numStudents));
+        exampleList.add( new ExampleItem(nClass, gLevel));
         saveClasses();
     }
 
@@ -113,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
-
-
 
     public void classSelect(int position){
         Intent intent = new Intent(MainActivity.this, Class_Selected.class);

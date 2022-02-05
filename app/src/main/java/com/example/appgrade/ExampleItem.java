@@ -6,25 +6,21 @@ import android.os.Parcelable;
 public class ExampleItem implements Parcelable {
     private String className;
     private String gradeLvl;
-    private String nStudents;
 
-    public ExampleItem(String classname, String gradelvl, String numStudents) {
+    public ExampleItem(String classname, String gradelvl) {
         className = classname;
         gradeLvl = gradelvl;
-        nStudents = numStudents;
     }
 
     protected ExampleItem(Parcel in) {
         className = in.readString();
         gradeLvl = in.readString();
-        nStudents = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(className);
         dest.writeString(gradeLvl);
-        dest.writeString(nStudents);
     }
 
     @Override
@@ -55,8 +51,5 @@ public class ExampleItem implements Parcelable {
     public String getGradeLvl() {
         return gradeLvl; }
 
-    public String getNstudents(){
-        return nStudents;
-    }
 }
 

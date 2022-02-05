@@ -5,11 +5,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.PrimitiveIterator;
@@ -20,7 +25,12 @@ public class Class_Selected extends AppCompatActivity {
     private String sSex;
     private String className;
     private String gradeLevel;
-    private String nOfStudents;
+    TextView classnamed;
+    TextView LevelG;
+
+   // public static final String SHAREDPREF = "sharedpref";
+   // public static final String SAVED_CLASS = "shared_class";
+   // public static final String SAVED_GRADE_LEVEL = "shared_grade_level";
 
     private RecyclerView sRecyclerView;
     private StudentAdapter sAdapter;
@@ -31,24 +41,13 @@ public class Class_Selected extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class__selected);
 
-        buildRecycleView();
-
-//          Get Data
-        loadData();
-
         loadButtons();
-
+        loadData();
+        buildRecycleView();
         addStudentData();
 
     }
 
-    private void CreateStudent(){
-        Intent intent = new Intent(this, Create_Student.class);
-        startActivity(intent);
-    }
-    private void studentSelected(){
-
-    }
 
     private void loadButtons(){
         Button selectedStudent = findViewById(R.id.selstudent);
@@ -61,26 +60,13 @@ public class Class_Selected extends AppCompatActivity {
         });
     }
 
-    private void loadData(){
-        if (className == null) {
-            Intent intent = getIntent();
-            ExampleItem exampleItem = intent.getParcelableExtra("Example Item");
-            className = exampleItem.getClassName();
-            gradeLevel = exampleItem.getGradeLvl();
-            nOfStudents = exampleItem.getNstudents();
-        }
-        TextView classnamed = findViewById(R.id.namedclass);
-        classnamed.setText(className);
-
-        TextView LevelG = findViewById(R.id.level);
-        LevelG.setText(gradeLevel);
-
+    private void CreateStudent(){
+        Intent intent = new Intent(this, Create_Student.class);
+        startActivity(intent);
     }
 
-    private void buildRecycleView(){
-        studentItems = new ArrayList<>();
-        studentItems.add(new StudentItem("Eunice Silot","Female"));
 
+    private void buildRecycleView(){
         sRecyclerView = findViewById(R.id.studentView);
         sLayoutManger = new LinearLayoutManager(this);
         sAdapter = new StudentAdapter(studentItems);
@@ -98,14 +84,47 @@ public class Class_Selected extends AppCompatActivity {
 
             @Override
             public void onDeleteClick(int position) {
+                studentItems.remove(position);
+                sAdapter.notifyItemRemoved(position);
+                saveData();
             }
         });
     }
-
     private void addStudentData(){
         Intent intent = getIntent();
         sName = intent.getStringExtra(Create_Student.STUDENTNAME);
         sSex = intent.getStringExtra(Create_Student.SEX);
+        if(sSex != null){
+        studentItems.add(new StudentItem(sName,sSex));
+        saveData();}
     }
+    public void saveData(){
+        if (sSex == null) {
+            Intent intent = getIntent();
+            ExampleItem exampleItem = intent.getParcelableExtra("Example Item");
+            className = exampleItem.getClassName();
+            gradeLevel = exampleItem.getGradeLvl();
+        }
+        classnamed = findViewById(R.id.namedclass);
+        classnamed.setText(className);
+        LevelG = findViewById(R.id.level);
+        LevelG.setText(gradeLevel);
+        SharedPreferences sharedPref = getSharedPreferences("sharedpref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(studentItems);
+        editor.putString("task list", json);
+        editor.apply();
+    }
+    private void loadData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedpref", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("task list", null);
+        Type type = new TypeToken<ArrayList<StudentItem>>(){}.getType();
+        studentItems = gson.fromJson(json, type);
 
+        if(studentItems == null) {
+            studentItems = new ArrayList<>();
+        }
+    }
 }
