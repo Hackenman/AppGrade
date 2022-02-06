@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeViewHolder> {
 
     private ArrayList<GradeItem> gItems;
+    private String[] strings;
     public static class GradeViewHolder extends RecyclerView.ViewHolder {
 
         public TextView gTextview;
@@ -27,6 +28,7 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeViewHol
 
     public GradeAdapter(ArrayList<GradeItem> gradelist){
         gItems = gradelist;
+        strings = new String[gItems.size()];
     }
 
     @NonNull

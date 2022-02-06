@@ -28,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private String nClass;
     private String gLevel;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
