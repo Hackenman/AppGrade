@@ -25,12 +25,14 @@ public class Class_Selected extends AppCompatActivity {
     private String sSex;
     private String className;
     private String gradeLevel;
+    private String Local_ClassName;
+    private String Local_GradeLevel;
     TextView classnamed;
     TextView LevelG;
 
-   // public static final String SHAREDPREF = "sharedpref";
-   // public static final String SAVED_CLASS = "shared_class";
-   // public static final String SAVED_GRADE_LEVEL = "shared_grade_level";
+    public static final String SHARED_PREFERENCES = "shared_preferences";
+    public static final String SAVED_CLASS = "shared_class";
+    public static final String SAVED_GRADE_LEVEL = "shared_grade_level";
 
     private RecyclerView sRecyclerView;
     private StudentAdapter sAdapter;
@@ -40,11 +42,14 @@ public class Class_Selected extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class__selected);
-
+        classnamed = findViewById(R.id.namedclass);
+        LevelG = findViewById(R.id.level);
         loadButtons();
+        loadTitle();
         loadData();
         buildRecycleView();
         addStudentData();
+        viewTitle();
 
     }
 
@@ -90,41 +95,60 @@ public class Class_Selected extends AppCompatActivity {
             }
         });
     }
+    private void loadTitle(){
+            Intent intent = getIntent();
+            ExampleItem exampleItem = intent.getParcelableExtra("Example Item");
+            if(exampleItem != null) {
+                className = exampleItem.getClassName();
+                gradeLevel = exampleItem.getGradeLvl();
+                classnamed.setText(className);
+                LevelG.setText(gradeLevel);
+
+                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+                SharedPreferences.Editor editor2 = sharedPreferences.edit();
+                editor2.putString(SAVED_CLASS, className);
+                editor2.putString(SAVED_GRADE_LEVEL, gradeLevel);
+                editor2.apply();
+            }
+
+
+    }
     private void addStudentData(){
         Intent intent = getIntent();
         sName = intent.getStringExtra(Create_Student.STUDENTNAME);
         sSex = intent.getStringExtra(Create_Student.SEX);
         if(sSex != null){
-        studentItems.add(new StudentItem(sName,sSex));
-        saveData();}
+            studentItems.add(new StudentItem(sName,sSex));
+            saveData();
+        }
     }
     public void saveData(){
-        if (sSex == null) {
-            Intent intent = getIntent();
-            ExampleItem exampleItem = intent.getParcelableExtra("Example Item");
-            className = exampleItem.getClassName();
-            gradeLevel = exampleItem.getGradeLvl();
-        }
-        classnamed = findViewById(R.id.namedclass);
-        classnamed.setText(className);
-        LevelG = findViewById(R.id.level);
-        LevelG.setText(gradeLevel);
+
         SharedPreferences sharedPref = getSharedPreferences("sharedpref", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         Gson gson = new Gson();
         String json = gson.toJson(studentItems);
         editor.putString("task list", json);
         editor.apply();
+
     }
     private void loadData(){
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedpref", MODE_PRIVATE);
+
+        SharedPreferences sharedPref = getSharedPreferences("sharedpref", MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("task list", null);
+        String json = sharedPref.getString("task list", null);
         Type type = new TypeToken<ArrayList<StudentItem>>(){}.getType();
         studentItems = gson.fromJson(json, type);
-
         if(studentItems == null) {
             studentItems = new ArrayList<>();
         }
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        Local_ClassName = sharedPreferences.getString(SAVED_CLASS, "");
+        Local_GradeLevel = sharedPreferences.getString(SAVED_GRADE_LEVEL, "");
+
+    }
+    private void viewTitle(){
+        classnamed.setText(Local_ClassName);
+        LevelG.setText(Local_GradeLevel);
     }
 }
