@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,14 +20,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String CLASS_NAME = "com.example.appgrade.CLASS_NAME";
-    public static final String GRADE_LEVEL = "com.example.appgrade.GRADE_LEVEL";
-
-    private ArrayList<ExampleItem> exampleList;
+    private SQLiteDatabase classDataBase;
 
     private androidx.recyclerview.widget.RecyclerView RecyclerView;
     private ExampleAdapter Adapter;
     private RecyclerView.LayoutManager LayoutManager;
+
     private String nClass;
     private String gLevel;
 
@@ -33,13 +34,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Buttons to Add classes
-        setButtons();
-//        Array for the data
-        loadClasses();
-//        build the Recycler view
-        buildRecycleView();
+        TableDBHelper dbHelper = new TableDBHelper(this);
+        classDataBase = dbHelper.getWritableDatabase();
 
+        setButtons();
+        loadClasses();
+        buildRecycleView();
         addClassData();
 
     }
@@ -55,22 +55,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadClasses(){
-        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("class list", null);
-        Type type = new TypeToken<ArrayList<ExampleItem>>() {}.getType();
-        exampleList = gson.fromJson(json, type);
 
-        if (exampleList == null) {
-            exampleList = new ArrayList<>();
-        }
     }
 
     public void buildRecycleView(){
         RecyclerView = findViewById(R.id.recyclerView);
 
         LayoutManager = new LinearLayoutManager(this);
-        Adapter = new ExampleAdapter(exampleList);
+        Adapter = new ExampleAdapter(this, getAllItems());
         RecyclerView.setLayoutManager(LayoutManager);
         RecyclerView.setAdapter(Adapter);
 
@@ -93,21 +85,32 @@ public class MainActivity extends AppCompatActivity {
         gLevel = intent.getStringExtra(Create_Class.GRADELEVEL);
         if (gLevel != null){
         createExampleList();}
+        if(nClass == null){
+            return;
+        }
+        ContentValues contval = new ContentValues();
+        contval.put(Tables_Classes.Tables_Class.COLUMN_CLASS, nClass);
+        contval.put(Tables_Classes.Tables_Class.COLUMN_LEVEL, gLevel);
 
+        classDataBase.insert(Tables_Classes.Tables_Class.TABLE_NAME, null, contval);
+        Adapter.swapCursor(getAllItems());
+        nClass = null;
+        gLevel = null;
     }
 
+    private Cursor getAllItems(){
+        return classDataBase.query(
+                Tables_Classes.Tables_Class.TABLE_NAME,
+                null, null, null, null, null,
+                Tables_Classes.Tables_Class.COLUMN_TIMESTAMP + " DESC"
+        );
+    }
     public void createExampleList(){
-        exampleList.add( new ExampleItem(nClass, gLevel));
         saveClasses();
     }
 
     private void saveClasses(){
-        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(exampleList);
-        editor.putString("class list", json);
-        editor.apply();
+
     }
 
     private void CreateClass(){
@@ -118,12 +121,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void classSelect(int position){
         Intent intent = new Intent(MainActivity.this, Class_Selected.class);
-        intent.putExtra("Example Item", exampleList.get(position));
         startActivity(intent);
     }
 
     public void removeClass(int position){
-        exampleList.remove(position);
+
         Adapter.notifyItemRemoved(position);
         saveClasses();
     }

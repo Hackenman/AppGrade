@@ -10,6 +10,7 @@ public class Tables_Classes {
         public static final String TABLE_NAME = "class_names";
         public static final String COLUMN_CLASS = "class";
         public static final String COLUMN_LEVEL = "grade_level";
+        public static final String COLUMN_TIMESTAMP = "timestamp";
     }
 }
 

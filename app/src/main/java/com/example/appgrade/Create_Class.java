@@ -53,7 +53,7 @@ public class Create_Class extends AppCompatActivity implements AdapterView.OnIte
 
     public void addClass(){
         Nameclass = findViewById(R.id.namingClass);
-        String nameclass = Nameclass.getText().toString();
+        String nameclass = Nameclass.getText().toString().trim();
         String level = gradelvl;
 
         Intent intent = new Intent(this, MainActivity.class);
