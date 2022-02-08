@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppGrade">
         <activity
+            android:name=".StudentAddScore"
+            android:exported="false" />
+        <activity
             android:name=".Create_Student"
             android:exported="false" />
         <activity android:name=".Student_Selected" />

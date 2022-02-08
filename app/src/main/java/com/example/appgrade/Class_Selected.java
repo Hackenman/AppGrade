@@ -103,15 +103,12 @@ public class Class_Selected extends AppCompatActivity {
                 gradeLevel = exampleItem.getGradeLvl();
                 classnamed.setText(className);
                 LevelG.setText(gradeLevel);
-
                 SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
                 SharedPreferences.Editor editor2 = sharedPreferences.edit();
                 editor2.putString(SAVED_CLASS, className);
                 editor2.putString(SAVED_GRADE_LEVEL, gradeLevel);
                 editor2.apply();
             }
-
-
     }
     private void addStudentData(){
         Intent intent = getIntent();
@@ -123,7 +120,6 @@ public class Class_Selected extends AppCompatActivity {
         }
     }
     public void saveData(){
-
         SharedPreferences sharedPref = getSharedPreferences("sharedpref", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         Gson gson = new Gson();
@@ -133,7 +129,6 @@ public class Class_Selected extends AppCompatActivity {
 
     }
     private void loadData(){
-
         SharedPreferences sharedPref = getSharedPreferences("sharedpref", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPref.getString("task list", null);
