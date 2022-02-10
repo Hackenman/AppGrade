@@ -91,6 +91,10 @@ public class Class_Selected extends AppCompatActivity {
             public void onDeleteClick(int position) {
                 studentItems.remove(position);
                 sAdapter.notifyItemRemoved(position);
+                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove(SHARED_PREFERENCES);
+                editor.apply();
                 saveData();
             }
         });

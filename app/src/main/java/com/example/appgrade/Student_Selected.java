@@ -71,11 +71,14 @@ public class Student_Selected extends AppCompatActivity {
         qaTotal = findViewById(R.id.Qa);
         qgTotal = findViewById(R.id.QG);
         Button button = findViewById(R.id.calculate);
+        Button backMenu = findViewById(R.id.buttontoMenu);
+
+
         loadTitle();
         loadData();
         changeScore();
         buildRecycleView();
-
+        getScore();
         showTitle();
 
         gAdapter.setOnItemClickListener(new GradeAdapter.OnItemClickListener() {
@@ -88,6 +91,14 @@ public class Student_Selected extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addTotal();
+            }
+        });
+
+        backMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Student_Selected.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -257,32 +268,43 @@ public class Student_Selected extends AppCompatActivity {
     }
     public void addTotal(){
         DecimalFormat df = new DecimalFormat("0.00");
-        float calculate_grade =0;
+        int calculate_grade =0;
         for(int ctr = 0; ctr <7; ctr++){
             calculate_grade= score[0][ctr] + calculate_grade;
         }
 
-        float WW = calculate_grade/160 * 100;
+        float WW = (float)calculate_grade/160 * 100;
+        df.format(WW);
         float ww = (float) (WW * 0.3);
         df.format(ww);
 
-        float ptGrade = 0;
+        int ptGrade = 0;
         for(int ctr = 0; ctr <6; ctr++){
             ptGrade = score[1][ctr] + ptGrade;
         }
-        float PT = ptGrade/120 * 100;
+        float PT = (float) ptGrade/120 * 100;
         float pt= (float) (PT * 0.5);
         df.format(pt);
 
         float quarterlyAsses = score[2][0];
+        int quart = (int) quarterlyAsses;
 
         quarterlyAsses = quarterlyAsses/50 * 100;
 
         float quarterlyasses = (float) (quarterlyAsses * 0.2);
         df.format(quarterlyasses);
         float initialGrade = ww + pt + quarterlyasses;
-        initialGrade = Float.valueOf(df.format(quarterlyasses));
+        df.format(initialGrade);
         int transmuted = transmutedGrade(initialGrade);
+
+        TextView written = findViewById(R.id.over);
+        TextView perform = findViewById(R.id.Pertask);
+        TextView quarty = findViewById(R.id.QAss);
+        TextView initial = findViewById(R.id.initial);
+        written.setText(calculate_grade + "/160");
+        perform.setText(ptGrade + "/120");
+        quarty.setText(quart+"/50");
+        initial.setText(String.valueOf(initialGrade));
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_CALCULATION, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -293,10 +315,10 @@ public class Student_Selected extends AppCompatActivity {
         editor.apply();
 
         SharedPreferences shared = getSharedPreferences(SHARED_CALCULATION, MODE_PRIVATE);
-        local_WW = shared.getString(SAVED_WRITTEN_WORK, "1");
-        local_PT = shared.getString(SAVED_PERFORMANCE_TASK, "2");
-        local_QA = shared.getString(SAVED_QUARTERLY_ASSESSMENT, "3");
-        local_QG = shared.getString(SAVED_QUARTERLY_GRADE, "4");
+        local_WW = shared.getString(SAVED_WRITTEN_WORK, "Error");
+        local_PT = shared.getString(SAVED_PERFORMANCE_TASK, "Error");
+        local_QA = shared.getString(SAVED_QUARTERLY_ASSESSMENT, "Error");
+        local_QG = shared.getString(SAVED_QUARTERLY_GRADE, "Error");
 
         Total.setText(local_WW);
         ptTotal.setText(local_PT);
@@ -308,6 +330,37 @@ public class Student_Selected extends AppCompatActivity {
         student_Name.setText(local_Name);
         student_Sex.setText(local_Sex);
     }
+    public void getScore(){
+        GradeItem gradeitem;
+        int position = 0;
+        for(int cntr = 0; cntr < 3; cntr++ ){
+            if(cntr == 0){
+                for(int cntr1 = 0; cntr1 < 7; cntr1++){
+                    gradeitem = gradelist.get(position);
+                    position++;
+                    String txt = gradeitem.getGrade_score();
+                    score[cntr][cntr1] = Integer.valueOf(txt);
+                }
+            }else if(cntr == 1){
+                for(int cntr2 = 0; cntr2 < 6; cntr2++){
+                    gradeitem = gradelist.get(position);
+                    position++;
+                    String txt = gradeitem.getGrade_score();
+                    score[cntr][cntr2] = Integer.valueOf(txt);
+                }
+            }else if(cntr == 2){
+                int cntr3 = 0;
+                gradeitem = gradelist.get(position);
+                position++;
+                String txt = gradeitem.getGrade_score();
+                score[cntr][cntr3] = Integer.valueOf(txt);
+            }else break;
+
+        }
+
+
+    }
+
 
     public int transmutedGrade(float initialG){
         int transmuted=0;
@@ -400,4 +453,5 @@ public class Student_Selected extends AppCompatActivity {
 
         return transmuted;
     }
+
 }

@@ -125,6 +125,10 @@ public class MainActivity extends AppCompatActivity {
     public void removeClass(int position){
         exampleList.remove(position);
         Adapter.notifyItemRemoved(position);
+        SharedPreferences shared = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = shared.edit();
+        editor.remove("shared preferences");
+        editor.apply();
         saveClasses();
     }
 

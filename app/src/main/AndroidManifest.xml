@@ -15,8 +15,10 @@
         <activity
             android:name=".Create_Student"
             android:exported="false" />
-        <activity android:name=".Student_Selected" />
-        <activity android:name=".Class_Selected" />
+        <activity android:name=".Student_Selected"
+            android:parentActivityName=".Class_Selected"/>
+        <activity android:name=".Class_Selected"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".Create_Class" />
         <activity android:name=".MainActivity">
             <intent-filter>
