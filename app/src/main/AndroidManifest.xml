@@ -10,17 +10,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppGrade">
         <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".StudentAddScore"
             android:exported="false" />
         <activity
             android:name=".Create_Student"
             android:exported="false" />
-        <activity android:name=".Student_Selected"
-            android:parentActivityName=".Class_Selected"/>
-        <activity android:name=".Class_Selected"
-            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".Student_Selected"
+            android:parentActivityName=".Class_Selected" />
+        <activity
+            android:name=".Class_Selected"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".Create_Class" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".loadingscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
