@@ -102,7 +102,7 @@
         android:text="Caculate"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.197"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/studentGrades"
         app:layout_constraintVertical_bias="0.936" />
@@ -115,10 +115,10 @@
         android:text="Classes"
         app:layout_constraintBottom_toTopOf="@+id/studentGrades"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.085"
+        app:layout_constraintHorizontal_bias="0.798"
         app:layout_constraintStart_toEndOf="@+id/studname"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.35" />
 
     <TextView
         android:id="@+id/Ww"
@@ -260,15 +260,19 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+
         android:onClick="saveFile"
+
+
         android:text="save"
-        app:layout_constraintBottom_toTopOf="@+id/studentGrades"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.451"
-        app:layout_constraintStart_toEndOf="@+id/buttontoMenu"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/calculate"
+        app:layout_constraintTop_toBottomOf="@+id/studentGrades"
+        app:layout_constraintVertical_bias="0.936" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
