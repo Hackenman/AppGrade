@@ -7,16 +7,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -49,7 +55,7 @@ public class Student_Selected extends AppCompatActivity {
             Integer.toString(score[1][4]), Integer.toString(score[1][5]), Integer.toString(score[2][0])};
     private static String[][] activity = {{"Written Work 1", "Written Work 2", "Written Work 3", "Written Work 4", "Written Work 5", "Written Work 6", "Written Work 7"},
             {"Performance Task 1", "Performance Task 2", "Performance Task 3", "Performance Task 4", "Performance Task 5", "Performance Task 6"}, {"Quarterly Assessment"}};
-
+    public  String FILE_NAME;
     private String actId;
     private String scoreId;
     private String prefname;
@@ -102,6 +108,15 @@ public class Student_Selected extends AppCompatActivity {
             }
         });
     }
+    private void buildRecycleView(){
+        gRecyclerView = findViewById(R.id.studentGrades);
+        gLayoutManager = new LinearLayoutManager(this);
+        gAdapter = new GradeAdapter(gradelist);
+
+        gRecyclerView.setLayoutManager(gLayoutManager);
+        gRecyclerView.setAdapter(gAdapter);
+
+    }
 
     public void create_List(){
         gradelist = new ArrayList<>();
@@ -122,15 +137,6 @@ public class Student_Selected extends AppCompatActivity {
 
     }
 
-    private void buildRecycleView(){
-        gRecyclerView = findViewById(R.id.studentGrades);
-        gLayoutManager = new LinearLayoutManager(this);
-        gAdapter = new GradeAdapter(gradelist);
-
-        gRecyclerView.setLayoutManager(gLayoutManager);
-        gRecyclerView.setAdapter(gAdapter);
-
-    }
     public void changeScore(){
         Intent intent2 = getIntent();
         actId = intent2.getStringExtra(StudentAddScore.ACTIVITY);
@@ -238,6 +244,7 @@ public class Student_Selected extends AppCompatActivity {
         editor.putString("grade list", json);
         editor.apply();
     }
+
     public void loadData(){
         SharedPreferences sharedPreferences =getSharedPreferences("shared preferences", MODE_PRIVATE);
         Gson gson = new Gson();
@@ -251,12 +258,14 @@ public class Student_Selected extends AppCompatActivity {
         local_Sex = preferences.getString(SAVED_SEX, "");
 
     }
+
     public void loadTitle(){
         Intent intent = getIntent();
         StudentItem studentItem = intent.getParcelableExtra("Student Item");
         if(studentItem != null){
             prefname = studentItem.getsName();
             prefSex = studentItem.getsSex();
+            FILE_NAME = prefname + ".txt";
             student_Name.setText(prefname);
             student_Sex.setText(prefSex);
             SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
@@ -266,6 +275,7 @@ public class Student_Selected extends AppCompatActivity {
             editor.apply();
         }
     }
+
     public void addTotal(){
         DecimalFormat df = new DecimalFormat("0.00");
         int calculate_grade =0;
@@ -326,10 +336,12 @@ public class Student_Selected extends AppCompatActivity {
         qgTotal.setText(local_QG);
 
     }
+
     public void showTitle(){
         student_Name.setText(local_Name);
         student_Sex.setText(local_Sex);
     }
+
     public void getScore(){
         GradeItem gradeitem;
         int position = 0;
@@ -360,7 +372,6 @@ public class Student_Selected extends AppCompatActivity {
 
 
     }
-
 
     public int transmutedGrade(float initialG){
         int transmuted=0;
@@ -452,6 +463,31 @@ public class Student_Selected extends AppCompatActivity {
         }
 
         return transmuted;
+    }
+
+    public void saveFile(View v){
+        String textname = prefname;
+        String textww = local_WW;
+        String textpt = local_PT;
+        String textqa = local_QA;
+        String textqg = local_QG;
+        String saveGrade = textname + "\n"
+                + "Written Work: " + textww + "\n"
+                + "Performance Task: " + textpt + "\n"
+                + "Quarterly Assessment: " + textqa + "\n"
+                + "Quarterly Grade: " + textqg;
+        FileOutputStream fos ;
+        try {
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos.write(saveGrade.getBytes());
+            Toast.makeText(this, "Saved to "+ getFilesDir() + "/" + FILE_NAME, Toast.LENGTH_LONG).show();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Toast.makeText(this, "Failed to Save", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

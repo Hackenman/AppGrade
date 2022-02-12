@@ -25,7 +25,9 @@
             android:name=".Class_Selected"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".Create_Class" />
-        <activity android:name=".loadingscreen">
+        <activity android:name=".loadingscreen"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
