@@ -1,11 +1,14 @@
 package com.example.appgrade;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -19,10 +22,13 @@ import com.google.gson.reflect.TypeToken;
 
 import org.w3c.dom.Text;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -46,7 +52,7 @@ public class Student_Selected extends AppCompatActivity {
     private RecyclerView gRecyclerView;
     private GradeAdapter gAdapter;
     private RecyclerView.LayoutManager gLayoutManager;
-
+    private static final int CREATE_FILE = 101;
     private ArrayList<GradeItem> gradelist;
     private static int[][] score = {{0, 0, 0, 0, 0, 0, 0}, {0, 0 ,0, 0, 0, 0}, {0}};
     private static String[] strScore = {Integer.toString(score[0][0]),
@@ -476,7 +482,8 @@ public class Student_Selected extends AppCompatActivity {
                 + "Performance Task: " + textpt + "\n"
                 + "Quarterly Assessment: " + textqa + "\n"
                 + "Quarterly Grade: " + textqg;
-        FileOutputStream fos ;
+        createFile();
+        /*FileOutputStream fos ;
         try {
             fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
             fos.write(saveGrade.getBytes());
@@ -486,8 +493,62 @@ public class Student_Selected extends AppCompatActivity {
             Toast.makeText(this, "Failed to Save", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
+        }*/
+
+    }
+    private void createFile() {
+        // when you create document, you need to add Intent.ACTION_CREATE_DOCUMENT
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+
+        // filter to only show openable items.
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        // Create a file with the requested Mime type
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TITLE, prefname + ".txt");
+
+        startActivityForResult(intent, CREATE_FILE);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String textname = prefname;
+        String textww = local_WW;
+        String textpt = local_PT;
+        String textqa = local_QA;
+        String textqg = local_QG;
+        String saveGrade = textname + "\n"
+                + "Written Work: " + textww + "\n"
+                + "Performance Task: " + textpt + "\n"
+                + "Quarterly Assessment: " + textqa + "\n"
+                + "Quarterly Grade: " + textqg;
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CREATE_FILE) {
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    if (data != null
+                            && data.getData() != null) {
+                        writeInFile(data.getData(), saveGrade);
+                    }
+                    break;
+                case Activity.RESULT_CANCELED:
+                    break;
+            }
+        }
+    }
+    private void writeInFile(@NonNull Uri uri, @NonNull String text) {
+
+        OutputStream outputStream;
+        try {
+            outputStream = getContentResolver().openOutputStream(uri);
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(outputStream));
+            bw.write(text);
+            bw.flush();
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
+
 
 }

@@ -150,4 +150,13 @@ public class Class_Selected extends AppCompatActivity {
         classnamed.setText(Local_ClassName);
         LevelG.setText(Local_GradeLevel);
     }
+
+    private void saveClasses(View view){
+        StudentItem studentitem;
+        int position = 0;
+        String classGrid = Local_ClassName + "\n" +
+                Local_GradeLevel + "\n"
+                ;
+
+    }
 }
