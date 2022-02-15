@@ -1,11 +1,14 @@
 package com.example.appgrade;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +17,10 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.security.PrivateKey;
 import java.util.ArrayList;
@@ -33,7 +40,7 @@ public class Class_Selected extends AppCompatActivity {
     public static final String SHARED_PREFERENCES = "shared_preferences";
     public static final String SAVED_CLASS = "shared_class";
     public static final String SAVED_GRADE_LEVEL = "shared_grade_level";
-
+    public static final int CREATE_FILE = 101;
     private RecyclerView sRecyclerView;
     private StudentAdapter sAdapter;
     private RecyclerView.LayoutManager sLayoutManger;
@@ -56,11 +63,17 @@ public class Class_Selected extends AppCompatActivity {
 
     private void loadButtons(){
         Button selectedStudent = findViewById(R.id.selstudent);
-
         selectedStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CreateStudent();
+            }
+        });
+        Button saveClasses = findViewById(R.id.save);
+        saveClasses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveClasses();
             }
         });
     }
@@ -151,12 +164,46 @@ public class Class_Selected extends AppCompatActivity {
         LevelG.setText(Local_GradeLevel);
     }
 
-    private void saveClasses(View view){
+    private void saveClasses(){
+
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TITLE, Local_ClassName + ".txt");
+        startActivityForResult(intent, CREATE_FILE);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         StudentItem studentitem;
         int position = 0;
         String classGrid = Local_ClassName + "\n" +
-                Local_GradeLevel + "\n"
-                ;
+                Local_GradeLevel + "\n" +
+                "Name" + "\t\t" + "Written Work" + "\t" + "Performance Task" + "\t" + "Quarterly Assessment" + "\t" + "Initial Grade" + "\t" + "Quarterly Grade" + "\t" + "Sex" + "\n";
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CREATE_FILE) {
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    if (data != null
+                            && data.getData() != null) {
+                        writeInFile(data.getData(), classGrid);
+                    }
+                    break;
+                case Activity.RESULT_CANCELED:
+                    break;
+            }
+        }
+    }
+    private void writeInFile(@NonNull Uri uri, @NonNull String text) {
 
+        OutputStream outputStream;
+        try {
+            outputStream = getContentResolver().openOutputStream(uri);
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(outputStream));
+            bw.write(text);
+            bw.flush();
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

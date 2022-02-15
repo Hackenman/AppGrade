@@ -43,11 +43,13 @@ public class Student_Selected extends AppCompatActivity {
     public static final String SAVED_PERFORMANCE_TASK = "shared_performance_task";
     public static final String SAVED_QUARTERLY_ASSESSMENT = "shared_quarterly_assessment";
     public static final String SAVED_QUARTERLY_GRADE = "shared_quarterly_grade";
+    public static final String SAVED_INITIAL_GRADE = "shared_initial_grade";
     private String local_Name;
     private String local_Sex;
     private String local_WW;
     private String local_PT;
     private String local_QA;
+    private String local_IG;
     private String local_QG;
     private RecyclerView gRecyclerView;
     private GradeAdapter gAdapter;
@@ -327,6 +329,7 @@ public class Student_Selected extends AppCompatActivity {
         editor.putString(SAVED_WRITTEN_WORK, String.valueOf(ww));
         editor.putString(SAVED_PERFORMANCE_TASK, String.valueOf(pt));
         editor.putString(SAVED_QUARTERLY_ASSESSMENT, String.valueOf(quarterlyasses));
+        editor.putString(SAVED_INITIAL_GRADE, String.valueOf(initialGrade));
         editor.putString(SAVED_QUARTERLY_GRADE, String.valueOf(transmuted));
         editor.apply();
 
@@ -334,6 +337,7 @@ public class Student_Selected extends AppCompatActivity {
         local_WW = shared.getString(SAVED_WRITTEN_WORK, "Error");
         local_PT = shared.getString(SAVED_PERFORMANCE_TASK, "Error");
         local_QA = shared.getString(SAVED_QUARTERLY_ASSESSMENT, "Error");
+        local_IG = shared.getString(SAVED_INITIAL_GRADE, "Error");
         local_QG = shared.getString(SAVED_QUARTERLY_GRADE, "Error");
 
         Total.setText(local_WW);
@@ -476,39 +480,32 @@ public class Student_Selected extends AppCompatActivity {
         String textww = local_WW;
         String textpt = local_PT;
         String textqa = local_QA;
+        String textiq = local_IG;
         String textqg = local_QG;
-        String saveGrade = textname + "\n"
-                + "Written Work: " + textww + "\n"
-                + "Performance Task: " + textpt + "\n"
-                + "Quarterly Assessment: " + textqa + "\n"
-                + "Quarterly Grade: " + textqg;
+        String saveGrade = textname + textww + textpt + textqa + textiq + textqg;
         createFile();
-        /*FileOutputStream fos ;
+        FileOutputStream fos ;
         try {
             fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
             fos.write(saveGrade.getBytes());
-            Toast.makeText(this, "Saved to "+ getFilesDir() + "/" + FILE_NAME, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Saved to "+ getFilesDir() + "/" + FILE_NAME, Toast.LENGTH_LONG).show();
             fos.close();
         } catch (FileNotFoundException e) {
             Toast.makeText(this, "Failed to Save", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
 
     }
+
     private void createFile() {
-        // when you create document, you need to add Intent.ACTION_CREATE_DOCUMENT
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-
-        // filter to only show openable items.
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-        // Create a file with the requested Mime type
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TITLE, prefname + ".txt");
-
         startActivityForResult(intent, CREATE_FILE);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String textname = prefname;
