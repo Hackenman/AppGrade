@@ -273,6 +273,7 @@ public class Student_Selected extends AppCompatActivity {
         if(studentItem != null){
             prefname = studentItem.getsName();
             prefSex = studentItem.getsSex();
+            FILE_NAME = prefname + ".txt";
             student_Name.setText(prefname);
             student_Sex.setText(prefSex);
             SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
