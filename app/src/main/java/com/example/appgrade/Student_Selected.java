@@ -483,7 +483,7 @@ public class Student_Selected extends AppCompatActivity {
         String textqg = local_QG;
         String saveGrade = textname + textww + textpt + textqa + textiq + textqg;
         createFile();
-        FileOutputStream fos ;
+       /* FileOutputStream fos ;
         try {
             fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
             fos.write(saveGrade.getBytes());
@@ -493,7 +493,7 @@ public class Student_Selected extends AppCompatActivity {
             Toast.makeText(this, "Failed to Save", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
@@ -531,6 +531,7 @@ public class Student_Selected extends AppCompatActivity {
             }
         }
     }
+
     private void writeInFile(@NonNull Uri uri, @NonNull String text) {
 
         OutputStream outputStream;
@@ -545,6 +546,8 @@ public class Student_Selected extends AppCompatActivity {
         }
 
     }
+
+
 
 
 }
