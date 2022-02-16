@@ -69,13 +69,13 @@ public class Class_Selected extends AppCompatActivity {
                 CreateStudent();
             }
         });
-        Button saveClasses = findViewById(R.id.save);
+        /*Button saveClasses = findViewById(R.id.save);
         saveClasses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveClasses();
             }
-        });
+        });*/
     }
 
     private void CreateStudent(){
