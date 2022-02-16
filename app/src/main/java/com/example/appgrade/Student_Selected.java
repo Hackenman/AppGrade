@@ -87,7 +87,6 @@ public class Student_Selected extends AppCompatActivity {
         Button button = findViewById(R.id.calculate);
         Button backMenu = findViewById(R.id.buttontoMenu);
 
-
         loadTitle();
         loadData();
         changeScore();
@@ -476,7 +475,7 @@ public class Student_Selected extends AppCompatActivity {
     }
 
     public void saveFile(View v){
-        String textname = prefname;
+        String textname = local_Name;
         String textww = local_WW;
         String textpt = local_PT;
         String textqa = local_QA;
@@ -502,13 +501,13 @@ public class Student_Selected extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TITLE, prefname + ".txt");
+        intent.putExtra(Intent.EXTRA_TITLE, local_Name + ".txt");
         startActivityForResult(intent, CREATE_FILE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String textname = prefname;
+        String textname = local_Name;
         String textww = local_WW;
         String textpt = local_PT;
         String textqa = local_QA;
